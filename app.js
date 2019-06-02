@@ -2,6 +2,8 @@ var config = require('./config.js');
 var Twitter = require('twitter');
 const https = require('https');
 const request = require('request');
+const express = require('express');
+const app = express();
 
 var client = new Twitter(config);
 
@@ -295,3 +297,9 @@ function Help(main)
 	); 
 }
 
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
+
+//Set The File Type To App As EJS.
+app.set('view engine', 'ejs');

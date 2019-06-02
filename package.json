@@ -1,0 +1,24 @@
+{
+  "name": "twitter-bot",
+  "version": "1.0.0",
+  "description": "Twitter Bot For Fun Things !",
+  "main": "index.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "keywords": [
+    "twitter",
+    "bot",
+    "node",
+    "twitter",
+    "project"
+  ],
+  "author": "Mohit Tanwani",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "request": "^2.88.0",
+    "twitter": "^1.7.1"
+  }
+}

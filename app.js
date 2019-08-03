@@ -40,11 +40,23 @@ function Reply(main)
   
   if(text.includes("quote") )
   {
+	if(text.includes("not") || text.includes("donot") || text.includes("don't"))
+	{
+		SendFine(main);
+	}
+	else {
 	  SendQuote(main);
+	}
   }
   else if(text.includes("joke") )
   {
-	  SendJoke(main);
+	if(text.includes("not") || text.includes("donot") || text.includes("don't"))
+	{
+		SendFine(main);
+	}
+	else {
+		SendJoke(main);
+	}
   }
   else if(text.includes("-help") )
   {
@@ -58,6 +70,21 @@ function Reply(main)
 	  else Help(main);
   }
   
+}
+
+function SendFine(main)
+{
+	var res = {
+		status: 'Hello '+main.user.name+', As your Wish :( ',
+		in_reply_to_status_id:  main.id_str,
+		auto_populate_reply_metadata:true
+		};
+		
+		client.post('statuses/update', res,
+		function(err, data, response) {
+		  console.log(data);
+		}
+		); 
 }
 
 function SendQuote(main)

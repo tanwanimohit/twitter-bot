@@ -170,6 +170,11 @@ function SendDuckDuckGo(main,text)
 	  var AbstractURL= data.AbstractURL;
 		var Abstract= data.Abstract;
 		Abstract = Abstract.split(".")[0];
+		if(Abstract.length>220)
+		{
+			Abstract=Abstract.substr(0,220);
+			Abstract+=".. ";
+		}
 		if(data.RelatedTopics[0]==null)
 		{
 			var res = {

@@ -18,6 +18,11 @@ stream.on('data', function(event) {
   
 });
 
+app.get('/', (req, res) => {
+	
+	res.render('home');
+});
+
  
 function like(main)
 {

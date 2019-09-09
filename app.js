@@ -18,7 +18,6 @@ stream.on('data', function(event) {
   
 });
 
-const app = express();
 app.use(express.static('views'));
 
 app.get('/', (req, res) => {

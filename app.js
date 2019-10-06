@@ -1,12 +1,11 @@
 var config = require('./config.js');
-var owm = require('./openweathermap.js')
 var Twitter = require('twitter');
 const https = require('https');
 const request = require('request');
 const express = require('express');
 const app = express();
 
-var client = new Twitter(config);
+var client = new Twitter(config.twitter);
 
 var stream = client.stream('statuses/filter', {track: '@BotRaju'});
 stream.on('data', function(event) {
@@ -178,7 +177,7 @@ function SendWeather(main, text)
   const regex = /weather (?:like )?in ([A-Za-z]+)/;
   const city = regex.exec(text)[1];
 
-  https.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${owm.key}`, (resp) => {
+  https.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${config.openweathermap.key}`, (resp) => {
 
     resp.on('data', (d) => {
     const responseJson = JSON.parse(d);

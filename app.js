@@ -5,7 +5,7 @@ const request = require('request');
 const express = require('express');
 const app = express();
 
-var client = new Twitter(config);
+var client = new Twitter(config.twitter);
 
 var stream = client.stream('statuses/filter', {track: '@BotRaju'});
 stream.on('data', function(event) {
@@ -64,6 +64,16 @@ function Reply(main)
 	else {
 		SendJoke(main);
 	}
+  }
+  else if(text.includes("weather") )
+  {
+  if(text.includes("not") || text.includes("donot") || text.includes("don't"))
+  {
+    SendFine(main);
+  }
+  else {
+    SendWeather(main, text);
+  }
   }
   else if(text.includes("-help") )
   {
@@ -160,6 +170,36 @@ function SendJoke(main)
 	});
 	
 	
+}
+
+function SendWeather(main, text)
+{
+  const regex = /weather (?:like )?in ([A-Za-z]+)/;
+  const city = regex.exec(text)[1];
+
+  https.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${config.openweathermap.key}`, (resp) => {
+
+    resp.on('data', (d) => {
+    const responseJson = JSON.parse(d);
+    const botReply = `Hello ${main.user.name}, The current weather in ${city} is:
+${responseJson.weather[0].main} - ${responseJson.weather[0].description}.
+The temperature is ${responseJson.main.temp}° celsius, the atmospheric pressure ${responseJson.main.pressure} mbar and the humidity of ${responseJson.main.humidity}%.`
+
+    const res = {
+    status: botReply,
+    in_reply_to_status_id:  main.id_str,
+    auto_populate_reply_metadata:true
+    };
+      
+    client.post('statuses/update', res,
+    function(err, data, response) {
+      console.log(data);
+    }
+    );
+    });
+	}).on("error", (err) => {
+	  console.log("Error: " + err.message);
+	});
 }
 
 
@@ -324,7 +364,7 @@ function SendDuckDuckGo(main,text)
 function Help(main)
 {
 	var res = {
-	status: 'Hello '+main.user.name+', You can Ask me a Joke, Quote or You can get information about anything... \nTip : Do not Write who,where,whom directly write keywords for example : \nDo not Write "What is RAM", Just Write "RAM"',
+	status: 'Hello '+main.user.name+', You can Ask me a Joke, Quote, Weather or You can get information about anything... \nTip : Do not Write who,where,whom directly write keywords for example : \nDo not Write "What is RAM", Just Write "RAM"',
 	in_reply_to_status_id:  main.id_str,
 	auto_populate_reply_metadata:true
 	};
